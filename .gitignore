@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+.env
+/user_profile.json
+.agents/
+/skills-lock.json
+/agents.md
+/data_engineering_roadmap.md
+/user_completion_progress.json
