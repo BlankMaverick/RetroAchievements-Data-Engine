@@ -26,3 +26,22 @@
 ### Next
 
 - Verify the new Python modules in a working Python environment, then inspect a real completion-progress response and confirm the collected data shape before designing PostgreSQL tables.
+
+## Session 2 — 2026-11-16
+
+### Done
+
+- Added a closest-to-completion ranking based on the share of core achievements earned.
+- Added per-game score retrieval through `API_GetUserProgress.php` and a largest-remaining-points ranking.
+- Added a balanced opportunity score: remaining points multiplied by the fraction of points already earned. Kept the raw remaining-points ranking for players who prefer that signal.
+- Added a community approachability ranking for the top five balanced opportunities. It averages community unlock rates across the player's remaining achievements, using `API_GetGameInfoAndUserProgress.php`.
+- Corrected the target username to `Foolacetic` and documented the rankings and their limitations.
+
+### Validation
+
+- Python compilation, local ranking examples, and `git diff --check` passed.
+- The user ran the collection, point-summary request, and first two rankings against the target profile. The new community endpoint has not been checked against a live response.
+
+### Next
+
+- Run the program with a valid API key to inspect the community ranking on live data, then review whether the results are useful.

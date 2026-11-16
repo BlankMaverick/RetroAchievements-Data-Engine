@@ -75,3 +75,38 @@ class RetroAchievementsClient:
                 break
 
         return {"Total": len(all_results), "Results": all_results}
+
+    def get_user_progress(self, username: str, game_ids: list[int]) -> dict[str, dict]:
+        """Return point and achievement summaries for the requested games."""
+        summaries = {}
+        batch_size = 100
+
+        for start in range(0, len(game_ids), batch_size):
+            batch = game_ids[start : start + batch_size]
+            response = self._get(
+                "API_GetUserProgress.php",
+                {"u": username, "i": ",".join(str(game_id) for game_id in batch)},
+            )
+            if not isinstance(response, dict):
+                raise RetroAchievementsAPIError(
+                    "The user progress response was not an object."
+                )
+            summaries.update(response)
+
+        return summaries
+
+    def get_game_info_and_user_progress(self, username: str, game_id: int) -> dict:
+        """Return game metadata, community stats, and the user's earned achievements."""
+        data = self._get(
+            "API_GetGameInfoAndUserProgress.php",
+            {"u": username, "g": str(game_id), "a": "1"},
+        )
+        if not isinstance(data, dict):
+            raise RetroAchievementsAPIError(
+                "The game info and user progress response was not an object."
+            )
+        if not isinstance(data.get("Achievements"), dict):
+            raise RetroAchievementsAPIError(
+                "The game response is missing achievement details."
+            )
+        return data
