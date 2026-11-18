@@ -45,3 +45,21 @@
 ### Next
 
 - Run the program with a valid API key to inspect the community ranking on live data, then review whether the results are useful.
+
+## Session 3 â€” 2026-11-18
+
+### Done
+
+- Added PostgreSQL schema and persistence for collection snapshots, normalized game progress, point summaries, achievement details, and raw API responses.
+- Moved ranking calculations to parameterized SQL. Python saves base data, asks SQL which five games to enrich, saves their detail responses, then queries SQL for the displayed rankings. JSON output remains as an export.
+- Added standalone SQL rankings and Docker Compose setup instructions; removed the duplicate Python ranking module.
+
+### Validation
+
+- Python compilation, database module import, and `git diff --check` passed.
+- Ran the Python persistence and two-stage ranking flow against a disposable PostgreSQL container with synthetic data. All four rankings returned expected results; test rows were removed and the temporary container was stopped.
+- The existing local PostgreSQL instance rejects the documented default password, so the normal local database connection still needs credentials reconciled. No live API request was made.
+
+### Next
+
+- Revoke and replace the RetroAchievements API key that appeared in troubleshooting output, set a working `DATABASE_URL`, then run the collector against the real profile.
